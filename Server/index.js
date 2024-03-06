@@ -4,10 +4,11 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User,UserModel } from "./userModel.js";
 import { Recipe,RecipeModel } from "./recipeModel.js";
+import config from "./config.js";
 const app = express();
 app.use(express.json())
 
- mongoose.connect("mongodb://localhost:27017/model_data")
+ mongoose.connect(config.mongodbUri)
  .then(() => {
     console.log("Connected to MongoDB");
 })
