@@ -6,22 +6,15 @@ import { User,UserModel } from "./userModel.js";
 import { Recipe,RecipeModel } from "./recipeModel.js";
 const app = express();
 app.use(express.json())
-const intializingDataBaseAndServer = () =>{
-    try{
-        mongoose.connect("mongodb://localhost:27017/model_data")
-        app.listen(3000,()=>{
-            console.log("server running...")
-            console.log("DB Connected");
-        })
 
-    }catch(error){
-        console.log(`DataBase Error : ${error.message}`)
-        process.exit(1)
-    }
-}
-
-intializingDataBaseAndServer();
-
+ mongoose.connect("mongodb://localhost:27017/model_data")
+ .then(() => {
+    console.log("Connected to MongoDB");
+})
+.catch(error => {
+    console.log("MongoDB connection error:", error);
+});
+app.listen(3000)
 
 const userAuthenication = (request,response,next) =>{
     let jwtToken;
@@ -79,7 +72,6 @@ app.post("/login",async (request,response)=>{
             }
             const JwtToken = jwt.sign(payload,"MY_TOKEN")
             response.send({JwtToken})
-            response.send("Login success!!")
         }else{
             response.status(400).send("Invalid Password")
         }
@@ -160,7 +152,7 @@ app.delete("/recipes",userAuthenication, async (request,response)=>{
     }
 })
 
-app.put("/recipes", userAuthenication, async (request, response) => {
+app.put("/recipes" ,userAuthenication, async (request, response) => {
     try {
         const { oldTitle, newTitle } = request.body;
         const updatedRecipe = await RecipeModel.findOneAndUpdate(
