@@ -56,7 +56,7 @@ app.post("/register",async (request,response)=>{
             response.status(400).send("User Already Exists")
         }
     }catch(error){
-        response.send("query releated errors")
+        response.send(`query erro : ${error.message}`)
     }
 })
 
