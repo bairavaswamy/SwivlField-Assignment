@@ -18,4 +18,19 @@ const RecipeSchema = new mongoose.Schema({
 
 const RecipeModel = mongoose.model("recipes", RecipeSchema);
 
-export { Recipe, RecipeModel };
+const saveInDbR = async (recipe) =>{
+    try{
+        const newRecipe = new UserModel({
+            title:recipe.title,
+            description:recipe.description,
+            ingredients:recipe.ingredients,
+            images:recipe.images
+        });
+        await newRecipe.save();
+        return { success: true, message: "Recipe successfully registered" };
+    }catch(error){
+        return { success: false, message: `Error registering Recipe: ${error.message}` };
+    }
+}
+
+export { Recipe,saveInDbR, RecipeModel };

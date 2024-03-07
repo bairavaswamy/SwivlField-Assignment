@@ -1,22 +1,20 @@
 import express, { response } from "express";
-import mongoose from "mongoose";
+import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { User,UserModel } from "./userModel.js";
-import { Recipe,RecipeModel } from "./recipeModel.js";
-import config from "./config.js";
+import { User,saveInDb,UserModel } from "./userModel.js";
+import { Recipe,saveInDbR,RecipeModel } from "./recipeModel.js";
+import connectionDB from "./DBSetup/DBSetup.js";
 const app = express();
 app.use(express.json())
 
- mongoose.connect(config.mongodbUri)
- .then(() => {
-    console.log("Connected to MongoDB");
-})
-.catch(error => {
-    console.log("MongoDB connection error:", error);
-});
-app.listen(3000 ,()=>{
-    console.log("server running");
+dotenv.config();
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT ,()=>{
+    connectionDB();
+    console.log(`Server running ${PORT}`);
 })
 
 const userAuthenication = (request,response,next) =>{
@@ -55,8 +53,8 @@ app.post("/register",async (request,response)=>{
                 gender,
                 location
             });
-            await newUser.save();
-            response.status(200).send("User Successfully Registred")
+            saveInDb(newUser);
+            response.status(200).send("User Successfully Added")
         }else{
             response.status(400).send("User Already Exists")
         }
@@ -137,7 +135,7 @@ app.post("/recipes",userAuthenication, async (request,response)=>{
             ingredients,
             images
         })
-        await newRecipe.save();
+            saveInDbR(newRecipe);
             response.status(200).send("Recipe Successfully Added")
      } catch (error) {
         console.log("Query Error");

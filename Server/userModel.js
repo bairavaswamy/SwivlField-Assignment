@@ -24,4 +24,21 @@ const UserSchema = new mongoose.Schema({
 
 const UserModel = mongoose.model("users", UserSchema);
 
-export { User, UserModel };
+const saveInDb = async (user) =>{
+    try{
+        const newUser = new UserModel({
+            username:user.username,
+            name: userInstance.name,
+            age: userInstance.age,
+            password: userInstance.password,
+            gender: userInstance.gender,
+            location: userInstance.location
+        });
+        await newUser.save();
+        return { success: true, message: "User successfully registered" };
+    }catch(error){
+        return { success: false, message: `Error registering user: ${error.message}` };
+    }
+}
+
+export { User,saveInDb, UserModel };
