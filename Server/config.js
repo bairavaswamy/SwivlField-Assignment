@@ -1,4 +1,5 @@
-// config.js
+import dotenv from 'dotenv'
+dotenv.config()
 const config = {
     development: {
       mongodbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/model_data'
