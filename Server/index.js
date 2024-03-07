@@ -8,14 +8,16 @@ import config from "./config.js";
 const app = express();
 app.use(express.json())
 
- mongoose.connect(config.mongodbUri)
+ mongoose.connect(config.mongodbUri,{ useNewUrlParser: true, useUnifiedTopology: true })
  .then(() => {
     console.log("Connected to MongoDB");
 })
 .catch(error => {
     console.log("MongoDB connection error:", error);
 });
-app.listen(3000)
+app.listen(3000 ,()=>{
+    console.log("server running");
+})
 
 const userAuthenication = (request,response,next) =>{
     let jwtToken;
