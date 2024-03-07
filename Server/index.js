@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { User,UserModel } from "./userModel.js";
 import { Recipe,RecipeModel } from "./recipeModel.js";
 import config from "./config.js";
