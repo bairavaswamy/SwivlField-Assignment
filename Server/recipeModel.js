@@ -20,7 +20,7 @@ const RecipeModel = mongoose.model("recipes", RecipeSchema);
 
 const saveInDbR = async (recipe) =>{
     try{
-        const newRecipe = new UserModel({
+        const newRecipe = new RecipeModel({
             title:recipe.title,
             description:recipe.description,
             ingredients:recipe.ingredients,

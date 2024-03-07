@@ -42,19 +42,26 @@ app.get("/", (request,response)=>{
 app.post("/register",async (request,response)=>{
     try{
         const {username,name,age,password,gender,location} = request.body
+        if (!username || !name || !age || !password || !gender || !location) {
+            return response.status(400).send("All fields are required");
+        }
         const hashPassword = await bcrypt.hash(password,10)
         const isAlreadyUser = await UserModel.findOne({username})
         if(isAlreadyUser === null){
-            const newUser = new User({
+            const neUser = new User(
                 username,
                 name,
                 age,
-                password:hashPassword,
+                hashPassword,
                 gender,
                 location
-            });
-            saveInDb(newUser);
-            response.status(200).send("User Successfully Added")
+            );
+            const condition = await saveInDb(neUser);
+            if((condition).success){
+                response.status(200).send("User Successfully Added")
+            }else{
+                response.send((condition).message)
+            }
         }else{
             response.status(400).send("User Already Exists")
         }
@@ -129,14 +136,19 @@ app.get("/recipes/:title", userAuthenication, async (request, response) => {
 app.post("/recipes",userAuthenication, async (request,response)=>{
     try {
         const {title,description,ingredients,images} = request.body
-        const newRecipe = new Recipe({
+        const newRecipe = new Recipe(
             title,
             description,
             ingredients,
             images
-        })
-            saveInDbR(newRecipe);
-            response.status(200).send("Recipe Successfully Added")
+        )
+            const conditonR = await saveInDbR(newRecipe);
+            if (( conditonR).success){
+                response.status(200).send("Recipe Successfully Added")
+            }else{
+                response.send((conditonR).message)
+            }
+            
      } catch (error) {
         console.log("Query Error");
     }
