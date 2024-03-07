@@ -8,7 +8,7 @@ import config from "./config.js";
 const app = express();
 app.use(express.json())
 
- mongoose.connect(config.mongodbUri,{ useNewUrlParser: true, useUnifiedTopology: true })
+ mongoose.connect(config.mongodbUri)
  .then(() => {
     console.log("Connected to MongoDB");
 })

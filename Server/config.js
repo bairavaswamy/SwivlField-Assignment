@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 const config = {
     development: {
-      mongodbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/model_data'
+      mongodbUri: process.env.MONGODB_URI || 'mongodb://0.0.0.0:27017/model_data'
     },
     production: {
       mongodbUri: process.env.MONGODB_URI
