@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -37,6 +37,9 @@ const userAuthenication = (request,response,next) =>{
         })
     }
 }
+app.get("/", (request,response)=>{
+    response.send("using routes register/ login in website and also recipes recipe/:recipename recipes delete modify name there check it out")
+})
 
 app.post("/register",async (request,response)=>{
     try{
